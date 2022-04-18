@@ -1,0 +1,58 @@
+<h1><%= @franchise.name %></h1>
+<table>
+  <tr>
+    <th>Active?</th>
+  </tr>
+  <tr>
+    <td><%= @franchise.active %></td>
+  </tr>
+</table>
+<h2>Franchise History</h2>
+<table>
+  <tr>
+    <th>Year</th>
+    <th>Team</th>
+    <th>League</th>
+    <th>W - L</th>
+    <th>Win %</th>
+    <th>Rank</th>
+    <th>Playoffs</th>
+    <th>R</th>
+    <th>RA</th>
+    <th>Park</th>
+    <th>Attendance</th>
+    <th>Managers</th>
+  </tr>
+  <%= for team <- @franchise.teams do %>
+    <tr>
+      <td><%= team.year_id %></td>
+      <td><%= team.name %></td>
+      <td><%= team.division_id %></td>
+      <td><%= team.w %> - <%= team.l %></td>
+      <td><%= :erlang.float_to_binary(team.w / (team.w + team.l), [decimals: 3]) %></td>
+      <td><%= team.rank %></td>
+      <td>
+        <%= if team.world_series_win == "Y" do %>
+          Won WS
+        <% else %>
+          <%= if team.league_win == "Y" do %>
+            Won Lg
+          <% else %>
+            <%= if team.division_win == "Y" do %>
+              Won Div
+            <% else %>
+              <%= if team.wild_card_win == "Y" do %>
+                Won WC
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      </td>
+      <td><%= team.r %></td>
+      <td><%= team.ra %></td>
+      <td>Baggiedome</td>
+      <td><%= Number.Delimit.number_to_delimited(team.attendance, precision: 0) %></td>
+      <td><%= team.manager %></td>
+    </tr>
+  <% end %>
+</table>

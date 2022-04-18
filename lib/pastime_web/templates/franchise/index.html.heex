@@ -1,0 +1,15 @@
+<h1>Franchises</h1>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Active?</th>
+    <th>NA Association</th>
+  </tr>
+  <%= for franchise <- @franchises do %>
+    <tr>
+      <td><%= franchise.name %></td>
+      <td><%= franchise.active %></td>
+      <td><%= franchise.na_assoc %></td>
+    </tr>
+  <% end %>
+</table>
