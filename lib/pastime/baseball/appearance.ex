@@ -1,13 +1,11 @@
 defmodule Pastime.Baseball.Appearance do
   use Ecto.Schema
 
-  alias Pastime.Baseball.League
-  alias Pastime.Baseball.Person
-  alias Pastime.Baseball.Team
-
   schema "appearance" do
-    field :year_id, :integer
-    field :teamid, :string
+    field :person_id, :integer
+    field :year, :integer
+    field :team_id, :integer
+    field :league_id, :integer
     field :g_all, :integer
     field :gs, :integer
     field :g_batting, :integer
@@ -25,8 +23,5 @@ defmodule Pastime.Baseball.Appearance do
     field :g_dh, :integer
     field :g_ph, :integer
     field :g_pr, :integer
-    belongs_to :person, Person, [foreign_key: :person_id, references: :person_id, type: :string]
-    belongs_to :team, Team
-    belongs_to :league, League, [foreign_key: :league_id, references: :league_id, type: :string]
   end
 end

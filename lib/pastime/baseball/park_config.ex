@@ -1,15 +1,14 @@
 defmodule Pastime.Baseball.ParkConfig do
   use Ecto.Schema
 
-  alias Pastime.Baseball.Park
-
   schema "park_config" do
+    field :park_id, :integer
     field :name, :string
     field :year, :integer
     field :capacity, :integer
     field :surface, :string
-    field :area_fair, :string
     field :cover, :string
+    field :area_fair, :string
     field :lf_dim, :integer
     field :slf_dim, :integer
     field :lfa_dim, :integer
@@ -29,6 +28,5 @@ defmodule Pastime.Baseball.ParkConfig do
     field :rc_w, :integer
     field :rf_w, :integer
     field :comments, :string
-    belongs_to :park, Park
   end
 end

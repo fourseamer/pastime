@@ -50,9 +50,9 @@
       </td>
       <td><%= team.r %></td>
       <td><%= team.ra %></td>
-      <td>Baggiedome</td>
+      <td>Sportsball Field</td>
       <td><%= Number.Delimit.number_to_delimited(team.attendance, precision: 0) %></td>
-      <td><%= team.manager %></td>
+      <td><%= @managers[0].person_id %></td>
     </tr>
   <% end %>
 </table>

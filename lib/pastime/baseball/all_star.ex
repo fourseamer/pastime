@@ -6,14 +6,13 @@ defmodule Pastime.Baseball.AllStar do
   alias Pastime.Baseball.Team
 
   schema "all_star" do
-    field :year_id, :integer
+    field :person_id, :integer
+    field :year, :integer
     field :game_num, :integer
     field :game_id, :string
-    field :teamid, :string
+    field :team_id, :integer
+    field :league_id, :integer
     field :gp, :integer
     field :starting_pos, :integer
-    belongs_to :person, Person, [foreign_key: :person_id, references: :person_id, type: :string]
-    belongs_to :team, Team
-    belongs_to :league, League, [foreign_key: :league_id, references: :league_id, type: :string]
   end
 end

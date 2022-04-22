@@ -1,4 +1,24 @@
-<h1><%= @team.name %></h1>
+<h1><%= Enum.join([@team.year_id,@team.name]," ") %></h1>
+<div class="row">
+  Record: <%= Enum.join([@team.w, @team.l],"-") %><br/>
+  Manager:
+  <%= for manager <- @managers do %>
+    <%= Enum.join([manager.person.name_first, manager.person.name_last], " ") %> (<%= Enum.join([manager.w, manager.l],"-") %>)<br />
+  <% end %>
+  Ballpark: <%= @team.park.name %><br/>
+  Attendance: <%= Number.Delimit.number_to_delimited(@team.attendance, precision: 0) %><br/>
+  Park Factors:<br/>
+  &nbsp;&nbsp;Batting - <%= @team.bpf %><br/>
+  &nbsp;&nbsp;Pitching - <%= @team.ppf %>
+</div>
+
+<div class="row">
+  <a href="/team/CIN"><%= @team.name %> Franchise</a> |
+  <a href="#batting">Batting</a> |
+  <a href="#pitching">Pitching</a> |
+  <a href="#fielding">Fielding</a>
+</div>
+
 <table>
   <tr>
     <th>Year</th>
@@ -6,6 +26,9 @@
     <th>Franchise</th>
     <th>Rank</th>
     <th>W - L</th>
+    <th>Manager</th>
+    <th>Park</th>
+    <th>Attendance</th>
   </tr>
   <tr>
     <td><%= @team.year_id %></td>
@@ -13,5 +36,77 @@
     <td><%= @team.franchise_id %></td>
     <td><%= @team.rank %></td>
     <td><%= @team.w %> - <%= @team.l %></td>
+    <td>
+      <%= for manager <- @managers do %>
+        <%= Enum.join([manager.person.name_first, manager.person.name_last], " ") %><br/>
+      <% end %>
+    </td>
+    <td><%= @team.park.name %></td>
+    <td><%= Number.Delimit.number_to_delimited(@team.attendance, precision: 0) %></td>
   </tr>
+</table>
+
+<!-- batting -->
+<h2>Team Batting</h2>
+<table>
+  <tr>
+    <th>Rk</th>
+    <th>Pos</th>
+    <th>Name</th>
+    <th>Age</th>
+    <th>G</th>
+    <th>PA</th>
+    <th>AB</th>
+    <th>R</th>
+    <th>H</th>
+    <th>2B</th>
+    <th>3B</th>
+    <th>HR</th>
+    <th>RBI</th>
+    <th>SB</th>
+    <th>CS</th>
+    <th>BB</th>
+    <th>SO</th>
+    <th>BA</th>
+    <th>OBP</th>
+    <th>SLG</th>
+    <th>OPS</th>
+    <th>TB</th>
+    <th>GDP</th>
+    <th>HBP</th>
+    <th>SH</th>
+    <th>SF</th>
+    <th>IBB</th>
+  </tr>
+  <%= for batting <- @team.battings do %>
+    <tr>
+      <td>1</td>
+      <td>C</td>
+      <td>Burt Stone</td>
+      <td>25</td>
+      <td><%= batting.g %></td>
+      <td><%= batting.ab + batting.bb + batting.hbp + batting.sh + batting.sf %></td>
+      <td><%= batting.ab %></td>
+      <td><%= batting.r %></td>
+      <td><%= batting.h %></td>
+      <td><%= batting."2b" %></td>
+      <td><%= batting."3b" %></td>
+      <td><%= batting.hr %></td>
+      <td><%= batting.rbi %></td>
+      <td><%= batting.sb %></td>
+      <td><%= batting.cs %></td>
+      <td><%= batting.bb %></td>
+      <td><%= batting.so %></td>
+      <td><%= if batting.ab == 0 do %>.000<% else %><%= :erlang.float_to_binary(batting.h / batting.ab, [decimals: 3]) %><% end %></td>
+      <td><%= if batting.ab == 0 do %>.000<% else %><%= :erlang.float_to_binary((batting.h + batting.bb + batting.hbp) / (batting.ab + batting.bb + batting.hbp + batting.sf), [decimals: 3]) %><% end %></td>
+      <td><%= if batting.ab == 0 do %>.000<% else %><%= :erlang.float_to_binary((batting.h - batting."2b" - batting."3b" - batting.hr + batting."2b" * 2 + batting."3b" * 3 + batting.hr * 4) / batting.ab, [decimals: 3])  %><% end %></td>
+      <td><%= if batting.ab == 0 do %>.000<% else %><%= :erlang.float_to_binary(((batting.h + batting.bb + batting.hbp) / (batting.ab + batting.bb + batting.hbp + batting.sf)) + ((batting.h - batting."2b" - batting."3b" - batting.hr + batting."2b" * 2 + batting."3b" * 3 + batting.hr * 4) / batting.ab), [decimals: 3]) %><% end %></td>
+      <td><%= batting.h - batting."2b" - batting."3b" - batting.hr + batting."2b" * 2 + batting."3b" * 3 + batting.hr * 4 %></td>
+      <td><%= batting.gidp %></td>
+      <td><%= batting.hbp %></td>
+      <td><%= batting.sh %></td>
+      <td><%= batting.sf %></td>
+      <td><%= batting.ibb %></td>
+    </tr>
+  <% end %>
 </table>

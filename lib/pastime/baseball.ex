@@ -3,10 +3,14 @@ defmodule Pastime.Baseball do
   The Baseball context.
   """
 
+  import Ecto.Query
+
   alias Pastime.BaseballRepo
   alias Pastime.Baseball.Franchise
   alias Pastime.Baseball.Person
   alias Pastime.Baseball.Team
+  alias Pastime.Baseball.Manager
+  alias Pastime.Baseball.Park
 
   ###
   ### PLAYERS
@@ -59,14 +63,19 @@ defmodule Pastime.Baseball do
   end
 
   def get_team_by!(params) do
-    BaseballRepo.get_by!(Team, params) |> BaseballRepo.preload([
-      :division,
-      :battings,
-      :pitchings,
-      :fieldings,
-      :all_stars,
-      :appearances,
-      :managers
+    BaseballRepo.get_by!(Team, params)
+  end
+
+  ###
+  ### MANAGERS
+  ###
+  def list_managers do
+    BaseballRepo.all(Manager)
+  end
+
+  def get_managers(team_id: team_id) do
+    BaseballRepo.all(from(m in Manager, where: m.team_id == ^team_id)) |> BaseballRepo.preload([
+      :person
     ])
   end
 
@@ -75,5 +84,9 @@ defmodule Pastime.Baseball do
   ###
   def list_parks do
     BaseballRepo.all(Park)
+  end
+
+  def get_park(park_id: park_id) do
+    BaseballRepo.get!(Park, park_id)
   end
 end

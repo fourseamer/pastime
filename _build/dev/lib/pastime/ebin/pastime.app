@@ -24,6 +24,7 @@
                         'Elixir.Pastime.Baseball.Person',
                         'Elixir.Pastime.Baseball.Pitching',
                         'Elixir.Pastime.Baseball.Team',
+                        'Elixir.Pastime.Baseball.VwBatting',
                         'Elixir.Pastime.BaseballRepo','Elixir.Pastime.Mailer',
                         'Elixir.Pastime.Repo','Elixir.PastimeWeb',
                         'Elixir.PastimeWeb.BaseballController',
