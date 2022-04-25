@@ -2,11 +2,8 @@ defmodule Pastime.Baseball.Pitching do
   use Ecto.Schema
 
   schema "pitching" do
-    field :person_id, :integer
     field :year, :integer
     field :stint, :integer
-    field :team_id, :integer
-    field :league_id, :integer
     field :w, :integer
     field :l, :integer
     field :g, :integer
@@ -32,5 +29,8 @@ defmodule Pastime.Baseball.Pitching do
     field :sh, :integer
     field :sf, :integer
     field :gidp, :integer
+    belongs_to :person, Pastime.Baseball.Person
+    belongs_to :team, Pastime.Baseball.Team
+    belongs_to :league, Pastime.Baseball.League
   end
 end

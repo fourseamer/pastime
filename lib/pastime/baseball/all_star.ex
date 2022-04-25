@@ -1,10 +1,6 @@
 defmodule Pastime.Baseball.AllStar do
   use Ecto.Schema
 
-  alias Pastime.Baseball.League
-  alias Pastime.Baseball.Person
-  alias Pastime.Baseball.Team
-
   schema "all_star" do
     field :person_id, :integer
     field :year, :integer

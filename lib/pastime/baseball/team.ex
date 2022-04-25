@@ -3,9 +3,6 @@ defmodule Pastime.Baseball.Team do
 
   schema "team" do
     field :year, :integer
-    field :league_id, :integer
-    field :franchise_id, :integer
-    field :division_id, :integer
     field :rank, :integer
     field :g, :integer
     field :g_home, :integer
@@ -42,13 +39,20 @@ defmodule Pastime.Baseball.Team do
     field :dp, :integer
     field :fp, :float
     field :name, :string
-    field :park, :string
-    field :park_id, :integer
+    field :park_name, :string
     field :attendance, :integer
     field :bpf, :integer
     field :ppf, :integer
     field :team_id_br, :string
     field :team_id_lahman45, :string
     field :team_id_retro, :string
+    has_many :battings, Pastime.Baseball.Batting
+    has_many :fieldings, Pastime.Baseball.Fielding
+    has_many :pitchings, Pastime.Baseball.Pitching
+    has_many :managers, Pastime.Baseball.Manager
+    belongs_to :league, Pastime.Baseball.League
+    belongs_to :franchise, Pastime.Baseball.Franchise
+    belongs_to :division, Pastime.Baseball.Division
+    belongs_to :park, Pastime.Baseball.Park
   end
 end

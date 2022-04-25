@@ -8,9 +8,8 @@ defmodule Pastime.BaseballRepo.Migrations.CreateFieldingView do
         SELECT p.name_first,
                p.name_last,
                f.person_id,
-               f.year_id,
+               f.year,
                f.stint,
-               f.teamid,
                f.team_id,
                f.league_id,
                f.pos,
@@ -27,16 +26,15 @@ defmodule Pastime.BaseballRepo.Migrations.CreateFieldingView do
                f.cs,
                f.zr
           FROM fielding f
-          JOIN person p ON p.person_id = f.person_id
+          JOIN person p ON p.id = f.person_id
 
         UNION ALL
 
         SELECT p.name_first,
                p.name_last,
                fofs.person_id,
-               fofs.year_id,
+               fofs.year,
                fofs.stint,
-               fofs.teamid,
                fofs.team_id,
                fofs.league_id,
                fofs.pos,
@@ -53,17 +51,16 @@ defmodule Pastime.BaseballRepo.Migrations.CreateFieldingView do
                fofs.cs,
                fofs.zr
           FROM fielding_of_split fofs
-          JOIN person p ON p.person_id = fofs.person_id
+          JOIN person p ON p.id = fofs.person_id
 
      UNION ALL
 
         SELECT p.name_first,
                p.name_last,
                fof.person_id,
-               fof.year_id,
+               fof.year,
                fof.stint,
                NULL AS teamid,
-               NULL AS team_id,
                NULL AS league_id,
                'LF' AS pos,
                fof.g_lf AS g,
@@ -79,17 +76,16 @@ defmodule Pastime.BaseballRepo.Migrations.CreateFieldingView do
                NULL AS cs,
                NULL AS zr
           FROM fielding_of fof
-          JOIN person p ON p.person_id = fof.person_id
-         WHERE fof.year_id < 1954
+          JOIN person p ON p.id = fof.person_id
+         WHERE fof.year < 1954
 
      UNION ALL
 
         SELECT p.name_first,
                p.name_last,
                fof.person_id,
-               fof.year_id,
+               fof.year,
                fof.stint,
-               NULL AS teamid,
                NULL AS team_id,
                NULL AS league_id,
                'CF' AS pos,
@@ -106,17 +102,16 @@ defmodule Pastime.BaseballRepo.Migrations.CreateFieldingView do
                NULL AS cs,
                NULL AS zr
           FROM fielding_of fof
-          JOIN person p ON p.person_id = fof.person_id
-         WHERE fof.year_id < 1954
+          JOIN person p ON p.id = fof.person_id
+         WHERE fof.year < 1954
 
      UNION ALL
 
         SELECT p.name_first,
                p.name_last,
                fof.person_id,
-               fof.year_id,
+               fof.year,
                fof.stint,
-               NULL AS teamid,
                NULL AS team_id,
                NULL AS league_id,
                'RF' AS pos,
@@ -133,10 +128,10 @@ defmodule Pastime.BaseballRepo.Migrations.CreateFieldingView do
                NULL AS cs,
                NULL AS zr
           FROM fielding_of fof
-          JOIN person p ON p.person_id = fof.person_id
-         WHERE fof.year_id < 1954
+          JOIN person p ON p.id = fof.person_id
+         WHERE fof.year < 1954
      ) AS f
-      ORDER BY f.person_id, f.year_id, f.stint, f.team_id
+      ORDER BY f.person_id, f.year, f.stint, f.team_id
     ;
     """
   end

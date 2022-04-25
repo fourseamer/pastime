@@ -7,8 +7,10 @@
   </tr>
   <%= for franchise <- @franchises do %>
     <tr>
-      <td><%= franchise.name %></td>
-      <td><%= franchise.active %></td>
+      <td>
+        <%= link(franchise.name, to: "/franchises/#{franchise.id}") %>
+      </td>
+      <td><%= if(franchise.is_active) do %>Yes<%= else %>No<% end %></td>
       <td><%= franchise.na_assoc %></td>
     </tr>
   <% end %>

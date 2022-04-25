@@ -25,5 +25,11 @@ defmodule Pastime.Baseball.Person do
     field :final_game, :date
     field :retro_id, :string
     field :bbref_id, :string
+    has_many :battings, Pastime.Baseball.Batting
+    has_many :fieldings, Pastime.Baseball.Fielding
+    has_many :pitchings, Pastime.Baseball.Pitching
+    has_many :managers, Pastime.Baseball.Manager
+    has_many :appearances, Pastime.Baseball.Appearance
+    has_many :all_stars, Pastime.Baseball.AllStar
   end
 end

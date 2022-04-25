@@ -19,13 +19,12 @@ defmodule PastimeWeb.Router do
 
     get "/", PageController, :index
 
-    get "/players", BaseballController, :index
-    get "/players/:person_id", BaseballController, :show
-
-    get "/teams", FranchiseController, :index
-    get "/teams/:franchise_id", FranchiseController, :show
-
-    get "/teams/:franchise_id/:year_id", TeamController, :show
+    resources "/players", PlayerController, only: [:index, :show]
+    resources "/teams", TeamController, only: [:index, :show]
+    resources "/franchises", FranchiseController, only: [:index, :show]
+    resources "/parks", ParkController, only: [:index, :show]
+    resources "/managers", ManagerController, only: [:index, :show]
+    resources "/leagues", LeagueController, only: [:index, :show]
   end
 
   # Other scopes may use custom stacks.

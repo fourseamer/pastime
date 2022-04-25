@@ -7,12 +7,12 @@ defmodule Pastime.BaseballRepo.Migrations.CreateBattingView do
     SELECT p.name_first,
            p.name_last,
            b.person_id,
-           b.year_id,
+           b.year,
            b.stint,
            b.team_id,
            b.league_id,
            t.franchise_id,
-           b.year_id - p.birth_year AS age,
+           b.year - p.birth_year AS age,
            b.g,
            (COALESCE(b.ab, 0) + COALESCE(b.bb, 0) + COALESCE(b.hbp, 0) + COALESCE(b.sh, 0) + COALESCE(b.sf, 0)) AS pa,
            b.ab,
@@ -53,7 +53,7 @@ defmodule Pastime.BaseballRepo.Migrations.CreateBattingView do
            COALESCE(b.sf, 0) AS sf,
            COALESCE(b.ibb, 0) AS ibb
       FROM batting b
-      JOIN person p ON p.person_id = b.person_id
+      JOIN person p ON p.id = b.person_id
       JOIN team t ON t.id = b.team_id
     ;
     """

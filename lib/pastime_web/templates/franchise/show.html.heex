@@ -4,7 +4,7 @@
     <th>Active?</th>
   </tr>
   <tr>
-    <td><%= @franchise.active %></td>
+    <td><%= @franchise.is_active %></td>
   </tr>
 </table>
 <h2>Franchise History</h2>
@@ -25,7 +25,7 @@
   </tr>
   <%= for team <- @franchise.teams do %>
     <tr>
-      <td><%= team.year_id %></td>
+      <td><%= team.year %></td>
       <td><%= team.name %></td>
       <td><%= team.division_id %></td>
       <td><%= team.w %> - <%= team.l %></td>
@@ -50,9 +50,13 @@
       </td>
       <td><%= team.r %></td>
       <td><%= team.ra %></td>
-      <td>Sportsball Field</td>
+      <td><%= team.park.name %></td>
       <td><%= Number.Delimit.number_to_delimited(team.attendance, precision: 0) %></td>
-      <td><%= @managers[0].person_id %></td>
+      <td>
+        <%= for manager <- team.managers do %>
+          <%= manager.person.name_first %> <%= manager.person.name_last %> (<%= manager.w %>-<%= manager.l %>)<br/>
+        <% end %>
+      </td>
     </tr>
   <% end %>
 </table>

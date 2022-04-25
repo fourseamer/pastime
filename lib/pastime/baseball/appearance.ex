@@ -2,10 +2,7 @@ defmodule Pastime.Baseball.Appearance do
   use Ecto.Schema
 
   schema "appearance" do
-    field :person_id, :integer
     field :year, :integer
-    field :team_id, :integer
-    field :league_id, :integer
     field :g_all, :integer
     field :gs, :integer
     field :g_batting, :integer
@@ -23,5 +20,8 @@ defmodule Pastime.Baseball.Appearance do
     field :g_dh, :integer
     field :g_ph, :integer
     field :g_pr, :integer
+    belongs_to :person, Pastime.Baseball.Person
+    belongs_to :team, Pastime.Baseball.Team
+    belongs_to :league, Pastime.Baseball.League
   end
 end

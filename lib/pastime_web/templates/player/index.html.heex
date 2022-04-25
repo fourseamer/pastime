@@ -1,0 +1,21 @@
+<h1>Listing Players</h1>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Height</th>
+    <th>Weight</th>
+    <th>Bats</th>
+    <th>Throws</th>
+  </tr>
+  <%= for player <- @players do %>
+    <tr>
+      <td>
+        <%= link(player.name_first <> " " <> player.name_last, to: "/players/#{player.id}") %>
+      </td>
+      <td><%= player.height %></td>
+      <td><%= player.weight %></td>
+      <td><%= player.bats %></td>
+      <td><%= player.throws %></td>
+    </tr>
+  <% end %>
+</table>

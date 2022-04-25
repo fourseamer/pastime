@@ -7,12 +7,14 @@ defmodule Pastime.Baseball.Park do
     field :state, :string
     field :start, :date
     field :end, :date
-    field :league_id, :integer
     field :notes, :string
     field :aka, :string
     field :latitude, :float
     field :longitude, :float
     field :altitude, :integer
     field :is_exact, :boolean
+    belongs_to :league, Pastime.Baseball.League
+    has_many :teams, Pastime.Baseball.Team
+    has_many :park_configs, Pastime.Baseball.ParkConfig
   end
 end

@@ -2,11 +2,8 @@ defmodule Pastime.Baseball.Fielding do
   use Ecto.Schema
 
   schema "fielding" do
-    field :person_id, :integer
     field :year, :integer
     field :stint, :integer
-    field :team_id, :integer
-    field :league_id, :integer
     field :pos, :string
     field :g, :integer
     field :gs, :integer
@@ -20,5 +17,8 @@ defmodule Pastime.Baseball.Fielding do
     field :sb, :integer
     field :cs, :integer
     field :zr, :string
+    belongs_to :person, Pastime.Baseball.Person
+    belongs_to :team, Pastime.Baseball.Team
+    belongs_to :league, Pastime.Baseball.League
   end
 end

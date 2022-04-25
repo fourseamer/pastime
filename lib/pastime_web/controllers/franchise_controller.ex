@@ -8,8 +8,10 @@ defmodule PastimeWeb.FranchiseController do
     render(conn, "index.html", franchises: franchises)
   end
 
-  def show(conn, %{"franchise_id" => franchise_id}) do
-    franchise = Baseball.get_franchise_by!(franchise_id: franchise_id)
+  def show(conn, %{"id" => id}) do
+    preloads = [teams: [:park, managers: [:person]]]
+    franchise = Baseball.get_franchise(id: id, preloads: preloads)
+    IO.inspect(franchise)
     render(conn, "show.html", franchise: franchise)
   end
 end
