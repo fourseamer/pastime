@@ -8,13 +8,9 @@ defmodule PastimeWeb.TeamController do
     render(conn, "index.html", teams: teams)
   end
 
-  def show(conn, %{"franchise_id" => franchise_id, "year" => year}) do
-    team = Baseball.get_team_by!(franchise_id: franchise_id, year: year)
-    managers = Baseball.get_managers(team_id: team.id)
-    park = Baseball.get_park(park_id: team.park_id)
-    battings = Baseball.get_batting(team_id: team.id)
-    pitchings = Baseball.get_pitching(team_id: team.id)
-    fieldings = Baseball.get_fielding(team_id: team.id)
-    render(conn, "show.html", team: team, managers: managers)
+  def show(conn, %{"id" => id}) do
+    preloads = [:appearances, :league, :franchise, :park, vw_battings: [:person], vw_pitchings: [:person], vw_fieldings: [:person], managers: [:person]]
+    team = Baseball.get_team(id: id, preloads: preloads)
+    render(conn, "show.html", team: team)
   end
 end

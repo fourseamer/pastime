@@ -1,8 +1,21 @@
-<h1><%= Enum.join([@team.year_id,@team.name]," ") %></h1>
+<h1><%= Enum.join([@team.year,@team.name]," ") %></h1>
 <div class="row">
-  Record: <%= Enum.join([@team.w, @team.l],"-") %><br/>
+  Record: <%= Enum.join([@team.w, @team.l],"-") %>,
+  <%= if @team.world_series_win do %>Won World Series
+  <% else %>
+    <%= if @team.league_win do %>Won League
+    <% else %>
+      <%= if @team.division_win do %>Won Division
+      <% else %>
+        <%= if @team.wild_card_win do %>Won Wild Card
+          <%= else %>Finished <%= Ordinal.ordinalize(@team.rank) %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <br/>
   Manager:
-  <%= for manager <- @managers do %>
+  <%= for manager <- @team.managers do %>
     <%= Enum.join([manager.person.name_first, manager.person.name_last], " ") %> (<%= Enum.join([manager.w, manager.l],"-") %>)<br />
   <% end %>
   Ballpark: <%= @team.park.name %><br/>
@@ -13,9 +26,9 @@
 </div>
 
 <div class="row">
-  <a href="/team/CIN"><%= @team.name %> Franchise</a> |
-  <a href="#batting">Batting</a> |
-  <a href="#pitching">Pitching</a> |
+  <%= link("#{@team.franchise.name} Franchise", to: "/franchises/#{@team.franchise_id}") %>&nbsp;|&nbsp;
+  <a href="#batting">Batting</a>&nbsp;|&nbsp;
+  <a href="#pitching">Pitching</a>&nbsp;|&nbsp;
   <a href="#fielding">Fielding</a>
 </div>
 
@@ -31,14 +44,14 @@
     <th>Attendance</th>
   </tr>
   <tr>
-    <td><%= @team.year_id %></td>
-    <td><%= @team.league_id %></td>
-    <td><%= @team.franchise_id %></td>
+    <td><%= @team.year %></td>
+    <td><%= @team.league.abbreviation %></td>
+    <td><%= @team.franchise.abbreviation %></td>
     <td><%= @team.rank %></td>
     <td><%= @team.w %> - <%= @team.l %></td>
     <td>
-      <%= for manager <- @managers do %>
-        <%= Enum.join([manager.person.name_first, manager.person.name_last], " ") %><br/>
+      <%= for manager <- @team.managers do %>
+        <%= manager.person.name_first <> " " <> manager.person.name_last %><br/>
       <% end %>
     </td>
     <td><%= @team.park.name %></td>
@@ -47,10 +60,10 @@
 </table>
 
 <!-- batting -->
+<a name="batting"/>
 <h2>Team Batting</h2>
 <table>
   <tr>
-    <th>Rk</th>
     <th>Pos</th>
     <th>Name</th>
     <th>Age</th>
@@ -78,14 +91,19 @@
     <th>SF</th>
     <th>IBB</th>
   </tr>
-  <%= for batting <- @team.battings do %>
+  <%= for batting <- @team.vw_battings do %>
     <tr>
-      <td>1</td>
-      <td>C</td>
-      <td>Burt Stone</td>
-      <td>25</td>
+      <td>
+        <%= for appearance <- @team.appearances do %>
+          <%= if (appearance.person_id == batting.person_id) do %>
+            <%= primary_position(appearance) %>
+          <% end %>
+        <% end %>
+      </td>
+      <td><%= link(Enum.join([batting.person.name_first,batting.person.name_last], " "), to: "/players/#{batting.person_id}") %></td>
+      <td><%= batting.year - batting.person.birth_year %></td>
       <td><%= batting.g %></td>
-      <td><%= batting.ab + batting.bb + batting.hbp + batting.sh + batting.sf %></td>
+      <td><%= batting.pa %></td>
       <td><%= batting.ab %></td>
       <td><%= batting.r %></td>
       <td><%= batting.h %></td>
@@ -97,11 +115,11 @@
       <td><%= batting.cs %></td>
       <td><%= batting.bb %></td>
       <td><%= batting.so %></td>
-      <td><%= if batting.ab == 0 do %>.000<% else %><%= :erlang.float_to_binary(batting.h / batting.ab, [decimals: 3]) %><% end %></td>
-      <td><%= if batting.ab == 0 do %>.000<% else %><%= :erlang.float_to_binary((batting.h + batting.bb + batting.hbp) / (batting.ab + batting.bb + batting.hbp + batting.sf), [decimals: 3]) %><% end %></td>
-      <td><%= if batting.ab == 0 do %>.000<% else %><%= :erlang.float_to_binary((batting.h - batting."2b" - batting."3b" - batting.hr + batting."2b" * 2 + batting."3b" * 3 + batting.hr * 4) / batting.ab, [decimals: 3])  %><% end %></td>
-      <td><%= if batting.ab == 0 do %>.000<% else %><%= :erlang.float_to_binary(((batting.h + batting.bb + batting.hbp) / (batting.ab + batting.bb + batting.hbp + batting.sf)) + ((batting.h - batting."2b" - batting."3b" - batting.hr + batting."2b" * 2 + batting."3b" * 3 + batting.hr * 4) / batting.ab), [decimals: 3]) %><% end %></td>
-      <td><%= batting.h - batting."2b" - batting."3b" - batting.hr + batting."2b" * 2 + batting."3b" * 3 + batting.hr * 4 %></td>
+      <td><%= batting.ba %></td>
+      <td><%= batting.obp %></td>
+      <td><%= batting.slg %></td>
+      <td><%= batting.ops %></td>
+      <td><%= batting.tb %></td>
       <td><%= batting.gidp %></td>
       <td><%= batting.hbp %></td>
       <td><%= batting.sh %></td>
@@ -109,4 +127,114 @@
       <td><%= batting.ibb %></td>
     </tr>
   <% end %>
+</table>
+
+<a name="pitching"/>
+<h1>Pitching</h1>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Age</th>
+    <th>W</th>
+    <th>L</th>
+    <th>ERA</th>
+    <th>G</th>
+    <th>GS</th>
+    <th>GF</th>
+    <th>CG</th>
+    <th>SHO</th>
+    <th>SV</th>
+    <th>IP</th>
+    <th>H</th>
+    <th>R</th>
+    <th>ER</th>
+    <th>HR</th>
+    <th>BB</th>
+    <th>IBB</th>
+    <th>SO</th>
+    <th>HBP</th>
+    <th>BK</th>
+    <th>WP</th>
+    <th>BFP</th>
+    <th>BA Opp</th>
+    <th>WHIP</th>
+    <th>H/9</th>
+    <th>HR/9</th>
+    <th>BB/9</th>
+    <th>SO/9</th>
+    <th>SO/BB</th>
+  </tr>
+  <%= for pitching <- @team.vw_pitchings do %>
+    <tr>
+      <td><%= link(Enum.join([pitching.person.name_first,pitching.person.name_last], " "), to: "/players/#{pitching.person_id}") %></td>
+      <td><%= pitching.age %></td>
+      <td><%= pitching.w %></td>
+      <td><%= pitching.l %></td>
+      <td><%= Decimal.round(pitching.era, 2) %></td>
+      <td><%= pitching.g %></td>
+      <td><%= pitching.gs %></td>
+      <td><%= pitching.gf %></td>
+      <td><%= pitching.cg %></td>
+      <td><%= pitching.sho %></td>
+      <td><%= pitching.sv %></td>
+      <td><%= pitching.ip %></td>
+      <td><%= pitching.h %></td>
+      <td><%= pitching.r %></td>
+      <td><%= pitching.er %></td>
+      <td><%= pitching.hr %></td>
+      <td><%= pitching.bb %></td>
+      <td><%= pitching.ibb %></td>
+      <td><%= pitching.so %></td>
+      <td><%= pitching.hbp %></td>
+      <td><%= pitching.bk %></td>
+      <td><%= pitching.wp %></td>
+      <td><%= pitching.bfp %></td>
+      <td><%= Decimal.round(pitching.ba_opp, 3) %></td>
+      <td><%= pitching.whip %></td>
+      <td><%= pitching.h9 %></td>
+      <td><%= pitching.hr9 %></td>
+      <td><%= pitching.bb9 %></td>
+      <td><%= pitching.so9 %></td>
+      <td><%= pitching."so/w" %></td>
+    </tr>
+    <% end %>
+</table>
+
+<a name="fielding"/>
+<h1>Fielding</h1>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>POS</th>
+    <th>G</th>
+    <th>GS</th>
+    <th>Inn Outs</th>
+    <th>PO</th>
+    <th>A</th>
+    <th>E</th>
+    <th>DP</th>
+    <th>PB</th>
+    <th>WP</th>
+    <th>SB</th>
+    <th>CS</th>
+    <th>ZR</th>
+  </tr>
+  <%= for fielding <- @team.vw_fieldings do %>
+    <tr>
+      <td><%= link(Enum.join([fielding.person.name_first,fielding.person.name_last], " "), to: "/players/#{fielding.person_id}") %></td>
+      <td>C</td>
+      <td><%= fielding.g %></td>
+      <td><%= fielding.gs %></td>
+      <td><%= fielding.inn_outs %></td>
+      <td><%= fielding.po %></td>
+      <td><%= fielding.a %></td>
+      <td><%= fielding.e %></td>
+      <td><%= fielding.dp %></td>
+      <td><%= fielding.pb %></td>
+      <td><%= fielding.wp %></td>
+      <td><%= fielding.sb %></td>
+      <td><%= fielding.cs %></td>
+      <td><%= fielding.zr %></td>
+    </tr>
+    <% end %>
 </table>

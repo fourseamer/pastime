@@ -1,0 +1,17 @@
+<h1>Franchises</h1>
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Active?</th>
+    <th>NA Association</th>
+  </tr>
+  <%= for franchise <- @franchises do %>
+    <tr>
+      <td>
+        <%= link(franchise.name, to: "/franchises/#{franchise.id}") %>
+      </td>
+      <td><%= if(franchise.is_active) do %>Yes<%= else %>No<% end %></td>
+      <td><%= franchise.na_assoc %></td>
+    </tr>
+  <% end %>
+</table>

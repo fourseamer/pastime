@@ -26,7 +26,9 @@
   <%= for team <- @franchise.teams do %>
     <tr>
       <td><%= team.year %></td>
-      <td><%= team.name %></td>
+      <td>
+        <%= link(team.name, to: "/teams/#{team.id}") %>
+      </td>
       <td><%= team.division_id %></td>
       <td><%= team.w %> - <%= team.l %></td>
       <td><%= :erlang.float_to_binary(team.w / (team.w + team.l), [decimals: 3]) %></td>

@@ -49,7 +49,8 @@ defmodule Pastime.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:number, "~> 1.0.3"}
+      {:number, "~> 1.0.3"},
+      {:ordinal, "~> 0.2.0"}
     ]
   end
 

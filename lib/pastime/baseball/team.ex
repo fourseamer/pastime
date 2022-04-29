@@ -47,9 +47,13 @@ defmodule Pastime.Baseball.Team do
     field :team_id_lahman45, :string
     field :team_id_retro, :string
     has_many :battings, Pastime.Baseball.Batting
+    has_many :vw_battings, Pastime.Baseball.VwBatting
     has_many :fieldings, Pastime.Baseball.Fielding
+    has_many :vw_fieldings, Pastime.Baseball.VwFielding
     has_many :pitchings, Pastime.Baseball.Pitching
+    has_many :vw_pitchings, Pastime.Baseball.VwPitching
     has_many :managers, Pastime.Baseball.Manager
+    has_many :appearances, Pastime.Baseball.Appearance
     belongs_to :league, Pastime.Baseball.League
     belongs_to :franchise, Pastime.Baseball.Franchise
     belongs_to :division, Pastime.Baseball.Division

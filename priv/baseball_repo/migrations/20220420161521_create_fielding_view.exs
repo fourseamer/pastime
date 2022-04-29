@@ -13,20 +13,21 @@ defmodule Pastime.BaseballRepo.Migrations.CreateFieldingView do
                f.team_id,
                f.league_id,
                f.pos,
-               f.g,
-               f.gs,
-               f.inn_outs,
-               f.po,
-               f.a,
-               f.e,
-               f.dp,
-               f.pb,
-               f.wp,
-               f.sb,
-               f.cs,
-               f.zr
+               COALESCE(f.g, 0) AS g,
+               COALESCE(f.gs, 0) AS gs,
+               COALESCE(f.inn_outs, 0) AS inn_outs,
+               COALESCE(f.po, 0) AS po,
+               COALESCE(f.a, 0) AS a,
+               COALESCE(f.e, 0) AS e,
+               COALESCE(f.dp, 0) AS dp,
+               COALESCE(f.pb, 0) AS pb,
+               COALESCE(f.wp, 0) AS wp,
+               COALESCE(f.sb, 0) AS sb,
+               COALESCE(f.cs, 0) AS cs,
+               COALESCE(f.zr, 0) AS zr
           FROM fielding f
           JOIN person p ON p.id = f.person_id
+         WHERE f.pos <> 'OF'
 
         UNION ALL
 
@@ -38,18 +39,18 @@ defmodule Pastime.BaseballRepo.Migrations.CreateFieldingView do
                fofs.team_id,
                fofs.league_id,
                fofs.pos,
-               fofs.g,
-               fofs.gs,
-               fofs.inn_outs,
-               fofs.po,
-               fofs.a,
-               fofs.e,
-               fofs.dp,
-               fofs.pb,
-               fofs.wp,
-               fofs.sb,
-               fofs.cs,
-               fofs.zr
+               COALESCE(fofs.g, 0) AS g,
+               COALESCE(fofs.gs, 0) AS gs,
+               COALESCE(fofs.inn_outs, 0) AS inn_outs,
+               COALESCE(fofs.po, 0) AS po,
+               COALESCE(fofs.a, 0) AS a,
+               COALESCE(fofs.e, 0) AS e,
+               COALESCE(fofs.dp, 0) AS dp,
+               COALESCE(fofs.pb, 0) AS pb,
+               COALESCE(fofs.wp, 0) AS wp,
+               COALESCE(fofs.sb, 0) AS sb,
+               COALESCE(fofs.cs, 0) AS cs,
+               COALESCE(fofs.zr, 0) AS zr
           FROM fielding_of_split fofs
           JOIN person p ON p.id = fofs.person_id
 
@@ -60,24 +61,29 @@ defmodule Pastime.BaseballRepo.Migrations.CreateFieldingView do
                fof.person_id,
                fof.year,
                fof.stint,
-               NULL AS teamid,
-               NULL AS league_id,
+               f.team_id,
+               f.league_id,
                'LF' AS pos,
-               fof.g_lf AS g,
-               NULL AS gs,
-               NULL AS inn_outs,
-               NULL AS po,
-               NULL AS a,
-               NULL AS e,
-               NULL AS dp,
-               NULL AS pb,
-               NULL AS wp,
-               NULL AS sb,
-               NULL AS cs,
-               NULL AS zr
+               COALESCE(fof.g_lf, 0) AS g,
+               0 AS gs,
+               0 AS inn_outs,
+               0 AS po,
+               0 AS a,
+               0 AS e,
+               0 AS dp,
+               0 AS pb,
+               0 AS wp,
+               0 AS sb,
+               0 AS cs,
+               0 AS zr
           FROM fielding_of fof
           JOIN person p ON p.id = fof.person_id
+          JOIN fielding f ON f.person_id = p.id
+               AND f.year = fof.year
+               AND f.stint = fof.stint
+               AND f.pos = 'OF'
          WHERE fof.year < 1954
+           AND fof.g_lf > 0
 
      UNION ALL
 
@@ -86,24 +92,29 @@ defmodule Pastime.BaseballRepo.Migrations.CreateFieldingView do
                fof.person_id,
                fof.year,
                fof.stint,
-               NULL AS team_id,
-               NULL AS league_id,
+               f.team_id,
+               f.league_id,
                'CF' AS pos,
-               fof.g_cf AS g,
-               NULL AS gs,
-               NULL AS inn_outs,
-               NULL AS po,
-               NULL AS a,
-               NULL AS e,
-               NULL AS dp,
-               NULL AS pb,
-               NULL AS wp,
-               NULL AS sb,
-               NULL AS cs,
-               NULL AS zr
+               COALESCE(fof.g_cf, 0) AS g,
+               0 AS gs,
+               0 AS inn_outs,
+               0 AS po,
+               0 AS a,
+               0 AS e,
+               0 AS dp,
+               0 AS pb,
+               0 AS wp,
+               0 AS sb,
+               0 AS cs,
+               0 AS zr
           FROM fielding_of fof
           JOIN person p ON p.id = fof.person_id
+          JOIN fielding f ON f.person_id = p.id
+               AND f.year = fof.year
+               AND f.stint = fof.stint
+               AND f.pos = 'OF'
          WHERE fof.year < 1954
+           AND fof.g_cf > 0
 
      UNION ALL
 
@@ -112,24 +123,29 @@ defmodule Pastime.BaseballRepo.Migrations.CreateFieldingView do
                fof.person_id,
                fof.year,
                fof.stint,
-               NULL AS team_id,
-               NULL AS league_id,
+               f.team_id,
+               f.league_id,
                'RF' AS pos,
-               fof.g_rf AS g,
-               NULL AS gs,
-               NULL AS inn_outs,
-               NULL AS po,
-               NULL AS a,
-               NULL AS e,
-               NULL AS dp,
-               NULL AS pb,
-               NULL AS wp,
-               NULL AS sb,
-               NULL AS cs,
-               NULL AS zr
+               COALESCE(fof.g_rf, 0) AS g,
+               0 AS gs,
+               0 AS inn_outs,
+               0 AS po,
+               0 AS a,
+               0 AS e,
+               0 AS dp,
+               0 AS pb,
+               0 AS wp,
+               0 AS sb,
+               0 AS cs,
+               0 AS zr
           FROM fielding_of fof
           JOIN person p ON p.id = fof.person_id
+          JOIN fielding f ON f.person_id = p.id
+               AND f.year = fof.year
+               AND f.stint = fof.stint
+               AND f.pos = 'OF'
          WHERE fof.year < 1954
+           AND fof.g_rf > 0
      ) AS f
       ORDER BY f.person_id, f.year, f.stint, f.team_id
     ;

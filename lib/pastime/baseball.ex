@@ -6,14 +6,58 @@ defmodule Pastime.Baseball do
   import Ecto.Query
 
   alias Pastime.BaseballRepo
-  alias Pastime.Baseball.Batting
-  alias Pastime.Baseball.Fielding
   alias Pastime.Baseball.Franchise
-  alias Pastime.Baseball.Person
-  alias Pastime.Baseball.Pitching
+  alias Pastime.Baseball.VwFranchise
   alias Pastime.Baseball.Team
+  alias Pastime.Baseball.Person
   alias Pastime.Baseball.Manager
   alias Pastime.Baseball.Park
+  alias Pastime.Baseball.Batting
+  alias Pastime.Baseball.Fielding
+  alias Pastime.Baseball.Pitching
+
+  ###
+  ### FRANCHISES
+  ###
+  def list_franchises(opts \\ []) do
+    VwFranchise
+    |> BaseballRepo.all()
+  end
+
+  def get_franchise(opts \\ []) do
+    preloads = Keyword.get(opts, :preloads, [])
+
+    Franchise
+    |> BaseballRepo.get_by(id: Keyword.get(opts, :id, nil))
+    |> BaseballRepo.preload(preloads)
+  end
+
+  def get_franchise_by(params) do
+    BaseballRepo.get_by(Franchise, params)
+  end
+
+  ###
+  ### TEAMS
+  ###
+  def list_teams(opts \\ []) do
+    preloads = Keyword.get(opts, :preloads, [])
+
+    Team
+    |> BaseballRepo.all()
+    |> BaseballRepo.preload(preloads)
+  end
+
+  def get_team(opts \\ []) do
+    preloads = Keyword.get(opts, :preloads, [])
+
+    Team
+    |> BaseballRepo.get_by(id: Keyword.get(opts, :id, nil))
+    |> BaseballRepo.preload(preloads)
+  end
+
+  def get_team_by(params) do
+    BaseballRepo.get_by(Team, params)
+  end
 
   ###
   ### PLAYERS
@@ -39,41 +83,26 @@ defmodule Pastime.Baseball do
   end
 
   ###
-  ### FRANCHISES
+  ### MANAGERS
   ###
-  def list_franchises(opts \\ []) do
+  def list_managers(opts \\ []) do
     preloads = Keyword.get(opts, :preloads, [])
 
-    Franchise
+    Person
     |> BaseballRepo.all()
     |> BaseballRepo.preload(preloads)
   end
 
-  def get_franchise(opts \\ []) do
+  def get_manager(opts \\ []) do
     preloads = Keyword.get(opts, :preloads, [])
 
-    Franchise
+    Person
     |> BaseballRepo.get_by(id: Keyword.get(opts, :id, nil))
     |> BaseballRepo.preload(preloads)
   end
 
-  def get_franchise_by(params) do
-    BaseballRepo.get_by(Franchise, params)
-  end
-
-  ###
-  ### TEAMS
-  ###
-  def list_teams do
-    BaseballRepo.all(Team)
-  end
-
-  def get_team(franchise_id, year_id) do
-    BaseballRepo.get(Team, franchise_id, year_id)
-  end
-
-  def get_team_by(params) do
-    BaseballRepo.get_by(Team, params)
+  def get_manager_by(params) do
+    BaseballRepo.get_by(Person, params)
   end
 
   ###
@@ -119,19 +148,6 @@ defmodule Pastime.Baseball do
 
   def get_fielding_by(params) do
     BaseballRepo.get_by(Fielding, params)
-  end
-
-  ###
-  ### MANAGERS
-  ###
-  def list_managers do
-    BaseballRepo.all(Manager)
-  end
-
-  def get_managers(team_id: team_id) do
-    BaseballRepo.all(from(m in Manager, where: m.team_id == ^team_id)) |> BaseballRepo.preload([
-      :person
-    ])
   end
 
   ###

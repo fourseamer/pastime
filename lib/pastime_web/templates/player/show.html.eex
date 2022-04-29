@@ -9,173 +9,205 @@
   </tr>
   <tr>
     <td><%= @player.name_first <> " " <> @player.name_last %></td>
-    <td><%= @player.height %></td>
+    <td><%= div(@player.height, 12) %>'<%= rem(@player.height, 12) %>"</td>
     <td><%= @player.weight %></td>
     <td><%= @player.bats %></td>
     <td><%= @player.throws %></td>
   </tr>
 </table>
 
-<h1>Batting</h1>
-<table>
-  <tr>
-    <th>Year</th>
-    <th>Stint</th>
-    <th>Team</th>
-    <th>League</th>
-    <th>G</th>
-    <th>AB</th>
-    <th>R</th>
-    <th>H</th>
-    <th>2B</th>
-    <th>3B</th>
-    <th>HR</th>
-    <th>RBI</th>
-    <th>SB</th>
-    <th>CS</th>
-    <th>BB</th>
-    <th>SO</th>
-    <th>IBB</th>
-    <th>HBP</th>
-    <th>SH</th>
-    <th>SF</th>
-    <th>GIDP</th>
-  </tr>
-  <%= for batting <- @player.battings do %>
+<%= unless Enum.empty?(@player.vw_battings) do %>
+  <h1>Batting</h1>
+  <table>
     <tr>
-      <td><%= batting.year %></td>
-      <td><%= batting.stint %></td>
-      <td><%= batting.team.name %></td>
-      <td><%= batting.league.abbreviation %></td>
-      <td><%= batting.g %></td>
-      <td><%= batting.ab %></td>
-      <td><%= batting.r %></td>
-      <td><%= batting.h %></td>
-      <td><%= batting."2b" %></td>
-      <td><%= batting."3b" %></td>
-      <td><%= batting.hr %></td>
-      <td><%= batting.rbi %></td>
-      <td><%= batting.sb %></td>
-      <td><%= batting.cs %></td>
-      <td><%= batting.bb %></td>
-      <td><%= batting.so %></td>
-      <td><%= batting.ibb %></td>
-      <td><%= batting.hbp %></td>
-      <td><%= batting.sh %></td>
-      <td><%= batting.sf %></td>
-      <td><%= batting.gidp %></td>
+      <th>Year</th>
+      <th>Age</th>
+      <th>Team</th>
+      <th>League</th>
+      <th>G</th>
+      <th>PA</th>
+      <th>AB</th>
+      <th>R</th>
+      <th>H</th>
+      <th>2B</th>
+      <th>3B</th>
+      <th>HR</th>
+      <th>RBI</th>
+      <th>SB</th>
+      <th>CS</th>
+      <th>BB</th>
+      <th>SO</th>
+      <th>BA</th>
+      <th>OBP</th>
+      <th>SLG</th>
+      <th>OPS</th>
+      <th>TB</th>
+      <th>GIDP</th>
+      <th>HBP</th>
+      <th>SH</th>
+      <th>SF</th>
+      <th>IBB</th>
+      <th>Pos</th>
     </tr>
+    <%= for batting <- @player.vw_battings do %>
+      <tr>
+        <td><%= batting.year %></td>
+        <td><%= batting.age %></td>
+        <td><%= link(batting.team.name, to: "/teams/#{batting.team_id}") %></td>
+        <td><%= batting.league.abbreviation %></td>
+        <td><%= batting.g %></td>
+        <td><%= batting.pa %></td>
+        <td><%= batting.ab %></td>
+        <td><%= batting.r %></td>
+        <td><%= batting.h %></td>
+        <td><%= batting."2b" %></td>
+        <td><%= batting."3b" %></td>
+        <td><%= batting.hr %></td>
+        <td><%= batting.rbi %></td>
+        <td><%= batting.sb %></td>
+        <td><%= batting.cs %></td>
+        <td><%= batting.bb %></td>
+        <td><%= batting.so %></td>
+        <td><%= batting.ba %></td>
+        <td><%= batting.obp %></td>
+        <td><%= batting.slg %></td>
+        <td><%= batting.ops %></td>
+        <td><%= batting.tb %></td>
+        <td><%= batting.gidp %></td>
+        <td><%= batting.hbp %></td>
+        <td><%= batting.sh %></td>
+        <td><%= batting.sf %></td>
+        <td><%= batting.ibb %></td>
+        <td>
+          <%= for appearance <- batting.team.appearances do %>
+            <%= if (appearance.year == batting.year and appearance.person_id == batting.person_id) do %>
+              <%= ordered_appearances(appearance, batting.team.g) %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
     <% end %>
-</table>
+  </table>
+<% end %>
 
-<h1>Pitching</h1>
-<table>
-  <tr>
-    <th>Year</th>
-    <th>Stint</th>
-    <th>Team</th>
-    <th>League</th>
-    <th>W</th>
-    <th>L</th>
-    <th>G</th>
-    <th>GS</th>
-    <th>CG</th>
-    <th>SHO</th>
-    <th>SV</th>
-    <th>IP</th>
-    <th>H</th>
-    <th>ER</th>
-    <th>HR</th>
-    <th>BB</th>
-    <th>SO</th>
-    <th>BA Opp</th>
-    <th>ERA</th>
-    <th>IBB</th>
-    <th>WP</th>
-    <th>HBP</th>
-    <th>BK</th>
-    <th>BFP</th>
-    <th>GF</th>
-    <th>R</th>
-    <th>SH</th>
-    <th>SF</th>
-    <th>GIDP</th>
-  </tr>
-  <%= for pitching <- @player.pitchings do %>
+<%= unless Enum.empty?(@player.vw_pitchings) do %>
+  <h1>Pitching</h1>
+  <table>
     <tr>
-      <td><%= pitching.year %></td>
-      <td><%= pitching.stint %></td>
-      <td><%= pitching.team.name %></td>
-      <td><%= pitching.league.abbreviation %></td>
-      <td><%= pitching.w %></td>
-      <td><%= pitching.l %></td>
-      <td><%= pitching.g %></td>
-      <td><%= pitching.gs %></td>
-      <td><%= pitching.cg %></td>
-      <td><%= pitching.sho %></td>
-      <td><%= pitching.sv %></td>
-      <td><%= :erlang.float_to_binary(pitching.ip_outs / 3, [decimals: 1]) %></td>
-      <td><%= pitching.h %></td>
-      <td><%= pitching.er %></td>
-      <td><%= pitching.hr %></td>
-      <td><%= pitching.bb %></td>
-      <td><%= pitching.so %></td>
-      <td><%= :erlang.float_to_binary(pitching.ba_opp, [decimals: 3]) %></td>
-      <td><%= :erlang.float_to_binary(pitching.era, [decimals: 2]) %></td>
-      <td><%= pitching.ibb %></td>
-      <td><%= pitching.wp %></td>
-      <td><%= pitching.hbp %></td>
-      <td><%= pitching.bk %></td>
-      <td><%= pitching.bfp %></td>
-      <td><%= pitching.gf %></td>
-      <td><%= pitching.r %></td>
-      <td><%= pitching.sh %></td>
-      <td><%= pitching.sf %></td>
-      <td><%= pitching.gidp %></td>
+      <th>Year</th>
+      <th>Age</th>
+      <th>Team</th>
+      <th>League</th>
+      <th>W</th>
+      <th>L</th>
+      <th>ERA</th>
+      <th>G</th>
+      <th>GS</th>
+      <th>GF</th>
+      <th>CG</th>
+      <th>SHO</th>
+      <th>SV</th>
+      <th>IP</th>
+      <th>H</th>
+      <th>R</th>
+      <th>ER</th>
+      <th>HR</th>
+      <th>BB</th>
+      <th>IBB</th>
+      <th>SO</th>
+      <th>HBP</th>
+      <th>BK</th>
+      <th>WP</th>
+      <th>BFP</th>
+      <th>BA Opp</th>
+      <th>WHIP</th>
+      <th>H/9</th>
+      <th>HR/9</th>
+      <th>BB/9</th>
+      <th>SO/9</th>
+      <th>SO/BB</th>
     </tr>
+    <%= for pitching <- @player.vw_pitchings do %>
+      <tr>
+        <td><%= pitching.year %></td>
+        <td><%= pitching.age %></td>
+        <td><%= link(pitching.team.name, to: "/teams/#{pitching.team_id}") %></td>
+        <td><%= pitching.league.abbreviation %></td>
+        <td><%= pitching.w %></td>
+        <td><%= pitching.l %></td>
+        <td><%= Decimal.round(pitching.era, 2) %></td>
+        <td><%= pitching.g %></td>
+        <td><%= pitching.gs %></td>
+        <td><%= pitching.gf %></td>
+        <td><%= pitching.cg %></td>
+        <td><%= pitching.sho %></td>
+        <td><%= pitching.sv %></td>
+        <td><%= pitching.ip %></td>
+        <td><%= pitching.h %></td>
+        <td><%= pitching.r %></td>
+        <td><%= pitching.er %></td>
+        <td><%= pitching.hr %></td>
+        <td><%= pitching.bb %></td>
+        <td><%= pitching.ibb %></td>
+        <td><%= pitching.so %></td>
+        <td><%= pitching.hbp %></td>
+        <td><%= pitching.bk %></td>
+        <td><%= pitching.wp %></td>
+        <td><%= pitching.bfp %></td>
+        <td><%= Decimal.round(pitching.ba_opp, 3) %></td>
+        <td><%= pitching.whip %></td>
+        <td><%= pitching.h9 %></td>
+        <td><%= pitching.hr9 %></td>
+        <td><%= pitching.bb9 %></td>
+        <td><%= pitching.so9 %></td>
+        <td><%= pitching."so/w" %></td>
+      </tr>
     <% end %>
-</table>
+  </table>
+<% end %>
 
-<h1>Fielding</h1>
-<table>
-  <tr>
-    <th>Year</th>
-    <th>Stint</th>
-    <th>Team</th>
-    <th>League</th>
-    <th>POS</th>
-    <th>G</th>
-    <th>GS</th>
-    <th>Inn Outs</th>
-    <th>PO</th>
-    <th>A</th>
-    <th>E</th>
-    <th>DP</th>
-    <th>PB</th>
-    <th>WP</th>
-    <th>SB</th>
-    <th>CS</th>
-    <th>ZR</th>
-  </tr>
-  <%= for fielding <- @player.fieldings do %>
+<%= unless Enum.empty?(@player.vw_fieldings) do %>
+  <h1>Fielding</h1>
+  <table>
     <tr>
-      <td><%= fielding.year %></td>
-      <td><%= fielding.stint %></td>
-      <td><%= fielding.team.name %></td>
-      <td><%= fielding.league.abbreviation %></td>
-      <td><%= fielding.pos %></td>
-      <td><%= fielding.g %></td>
-      <td><%= fielding.gs %></td>
-      <td><%= fielding.inn_outs %></td>
-      <td><%= fielding.po %></td>
-      <td><%= fielding.a %></td>
-      <td><%= fielding.e %></td>
-      <td><%= fielding.dp %></td>
-      <td><%= fielding.pb %></td>
-      <td><%= fielding.wp %></td>
-      <td><%= fielding.sb %></td>
-      <td><%= fielding.cs %></td>
-      <td><%= fielding.zr %></td>
+      <th>Year</th>
+      <th>Stint</th>
+      <th>Team</th>
+      <th>League</th>
+      <th>POS</th>
+      <th>G</th>
+      <th>GS</th>
+      <th>Inn Outs</th>
+      <th>PO</th>
+      <th>A</th>
+      <th>E</th>
+      <th>DP</th>
+      <th>PB</th>
+      <th>WP</th>
+      <th>SB</th>
+      <th>CS</th>
+      <th>ZR</th>
     </tr>
+    <%= for fielding <- @player.vw_fieldings do %>
+      <tr>
+        <td><%= fielding.year %></td>
+        <td><%= fielding.stint %></td>
+        <td><%= link(fielding.team.name, to: "/teams/#{fielding.team_id}") %></td>
+        <td><%= fielding.league.abbreviation %></td>
+        <td><%= fielding.pos %></td>
+        <td><%= fielding.g %></td>
+        <td><%= fielding.gs %></td>
+        <td><%= fielding.inn_outs %></td>
+        <td><%= fielding.po %></td>
+        <td><%= fielding.a %></td>
+        <td><%= fielding.e %></td>
+        <td><%= fielding.dp %></td>
+        <td><%= fielding.pb %></td>
+        <td><%= fielding.wp %></td>
+        <td><%= fielding.sb %></td>
+        <td><%= fielding.cs %></td>
+        <td><%= fielding.zr %></td>
+      </tr>
     <% end %>
-</table>
+  </table>
+<% end %>

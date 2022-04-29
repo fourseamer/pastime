@@ -2,16 +2,30 @@
 <table>
   <tr>
     <th>Name</th>
-    <th>Active?</th>
-    <th>NA Association</th>
+    <th>From</th>
+    <th>To</th>
+    <th>G</th>
+    <th>W</th>
+    <th>L</th>
+    <th>%</th>
+    <th>Div Wins</th>
+    <th>Lg Wins</th>
+    <th>WS Wins</th>
   </tr>
   <%= for franchise <- @franchises do %>
     <tr>
       <td>
         <%= link(franchise.name, to: "/franchises/#{franchise.id}") %>
       </td>
-      <td><%= if(franchise.is_active) do %>Yes<%= else %>No<% end %></td>
-      <td><%= franchise.na_assoc %></td>
+      <td><%= franchise.from %></td>
+      <td><%= franchise.to %></td>
+      <td><%= franchise.g %></td>
+      <td><%= franchise.w %></td>
+      <td><%= franchise.l %></td>
+      <td><%= franchise.pct %></td>
+      <td><%= franchise.division_wins %></td>
+      <td><%= franchise.league_wins %></td>
+      <td><%= franchise.world_series_wins %></td>
     </tr>
   <% end %>
 </table>

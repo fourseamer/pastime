@@ -19,11 +19,11 @@ defmodule PastimeWeb.Router do
 
     get "/", PageController, :index
 
-    resources "/players", PlayerController, only: [:index, :show]
-    resources "/teams", TeamController, only: [:index, :show]
     resources "/franchises", FranchiseController, only: [:index, :show]
-    resources "/parks", ParkController, only: [:index, :show]
+    resources "/teams", TeamController, only: [:index, :show]
+    resources "/players", PlayerController, only: [:index, :show]
     resources "/managers", ManagerController, only: [:index, :show]
+    resources "/parks", ParkController, only: [:index, :show]
     resources "/leagues", LeagueController, only: [:index, :show]
   end
 
