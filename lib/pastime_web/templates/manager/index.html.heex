@@ -1,0 +1,30 @@
+<h1>Managers</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Years</th>
+    <th>From</th>
+    <th>To</th>
+    <th>W</th>
+    <th>L</th>
+    <th>Pct</th>
+    <th>Best Finish</th>
+    <th>Worst Finish</th>
+    <th>Avg Finish</th>
+  </tr>
+  <%= for m <- @managers do %>
+    <tr>
+      <td><%= link(Enum.join([m.name_first,m.name_last], " "), to: "/managers/#{m.person_id}") %></td>
+      <td><%= m.yrs %></td>
+      <td><%= m.from %></td>
+      <td><%= m.to %></td>
+      <td><%= m.w %></td>
+      <td><%= m.l %></td>
+      <td><%= m.pct %></td>
+      <td><%= m.best_finish %></td>
+      <td><%= m.worst_finish %></td>
+      <td><%= m.avg_finish %></td>
+    </tr>
+  <% end %>
+</table>

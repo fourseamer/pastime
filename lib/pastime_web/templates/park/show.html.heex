@@ -1,0 +1,80 @@
+<h1><%= @park.name %></h1>
+<table>
+  <tr>
+    <th>City</th>
+    <th>State</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>AKA</th>
+    <th>Latitude</th>
+    <th>Longitude</th>
+    <th>Altitude</th>
+  </tr>
+  <tr>
+    <td><%= @park.city %></td>
+    <td><%= @park.state %></td>
+    <td><%= @park.start %></td>
+    <td><%= @park.end %></td>
+    <td><%= @park.aka %></td>
+    <td><%= @park.latitude %></td>
+    <td><%= @park.longitude %></td>
+    <td><%= @park.altitude %></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Year</th>
+    <th>Capacity</th>
+    <th>Surface</th>
+    <th>Cover</th>
+    <th>Area Fair</th>
+    <th>LF Dim</th>
+    <th>SLF Dim</th>
+    <th>LFA Dim</th>
+    <th>LC Dim</th>
+    <th>LCC Dim</th>
+    <th>CF Cim</th>
+    <th>RCC Dim</th>
+    <th>RC Dim</th>
+    <th>RFA Dim</th>
+    <th>SRF Dim</th>
+    <th>RF Dim</th>
+    <th>LF W</th>
+    <th>LC W</th>
+    <th>CF W</th>
+    <th>RC W</th>
+    <th>RF W</th>
+    <th>Foul</th>
+    <th>Comments</th>
+  </tr>
+  <%= for pc <- @park.park_configs do %>
+    <tr>
+      <td><%= pc.name %></td>
+      <td><%= pc.year %></td>
+      <td><%= Number.Delimit.number_to_delimited(pc.capacity, precision: 0) %></td>
+      <td><%= String.capitalize(pc.surface) %></td>
+      <td><%= String.capitalize(pc.cover) %></td>
+      <td><%= pc.area_fair %></td>
+      <td><%= pc.lf_dim %></td>
+      <td><%= pc.slf_dim %></td>
+      <td><%= pc.lfa_dim %></td>
+      <td><%= pc.lc_dim %></td>
+      <td><%= pc.lcc_dim %></td>
+      <td><%= pc.cf_dim %></td>
+      <td><%= pc.rcc_dim %></td>
+      <td><%= pc.rc_dim %></td>
+      <td><%= pc.rfa_dim %></td>
+      <td><%= pc.srf_dim %></td>
+      <td><%= pc.rf_dim %></td>
+      <td><%= pc.lf_w %></td>
+      <td><%= pc.lc_w %></td>
+      <td><%= pc.cf_w %></td>
+      <td><%= pc.rc_w %></td>
+      <td><%= pc.rf_w %></td>
+      <td><%= pc.foul %></td>
+      <td><%= pc.comments %></td>
+    </tr>
+  <% end %>
+</table>

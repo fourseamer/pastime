@@ -1,0 +1,28 @@
+<h1>Ballparks</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>City</th>
+    <th>State</th>
+    <th>Start</th>
+    <th>End</th>
+    <th>AKA</th>
+    <th>Latitude</th>
+    <th>Longitude</th>
+    <th>Altitude</th>
+  </tr>
+  <%= for p <- @parks do %>
+    <tr>
+      <td><%= link(p.name, to: "/parks/#{p.id}") %></td>
+      <td><%= p.city %></td>
+      <td><%= p.state %></td>
+      <td><%= p.start %></td>
+      <td><%= p.end %></td>
+      <td><%= p.aka %></td>
+      <td><%= p.latitude %></td>
+      <td><%= p.longitude %></td>
+      <td><%= p.altitude %></td>
+    </tr>
+  <% end %>
+</table>
