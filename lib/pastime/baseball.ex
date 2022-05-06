@@ -8,9 +8,9 @@ defmodule Pastime.Baseball do
   alias Pastime.BaseballRepo
   alias Pastime.Baseball.Franchise
   alias Pastime.Baseball.VwFranchise
+  alias Pastime.Baseball.League
   alias Pastime.Baseball.Team
   alias Pastime.Baseball.Person
-  alias Pastime.Baseball.Manager
   alias Pastime.Baseball.VwManager
   alias Pastime.Baseball.Park
   alias Pastime.Baseball.Batting
@@ -65,10 +65,17 @@ defmodule Pastime.Baseball do
   ###
   def list_players(opts \\ []) do
     preloads = Keyword.get(opts, :preloads, [])
+    params = Keyword.get(opts, :params, nil)
 
-    Person
-    |> BaseballRepo.all()
-    |> BaseballRepo.preload(preloads)
+    query = from(p in Person, order_by: [asc: p.id], preload: ^preloads)
+
+    page = BaseballRepo.paginate(
+      query,
+      after: params["after"],
+      before: params["before"],
+      cursor_fields: [:id],
+      limit: 50
+    )
   end
 
   def get_player(opts \\ []) do
@@ -86,9 +93,19 @@ defmodule Pastime.Baseball do
   ###
   ### MANAGERS
   ###
-  def list_managers() do
-    VwManager
-    |> BaseballRepo.all()
+  def list_managers(opts \\ []) do
+    preloads = Keyword.get(opts, :preloads, [])
+    params = Keyword.get(opts, :params, nil)
+
+    query = from(m in VwManager, order_by: [asc: m.person_id], preload: ^preloads)
+
+    page = BaseballRepo.paginate(
+      query,
+      after: params["after"],
+      before: params["before"],
+      cursor_fields: [:person_id],
+      limit: 50
+    )
   end
 
   def get_manager(opts \\ []) do
@@ -108,11 +125,17 @@ defmodule Pastime.Baseball do
   ###
   def list_parks(opts \\ []) do
     preloads = Keyword.get(opts, :preloads, [])
+    params = Keyword.get(opts, :params, nil)
 
-    Park
-    |> order_by(:name)
-    |> BaseballRepo.all
-    |> BaseballRepo.preload(preloads)
+    query = from(p in Park, order_by: [asc: p.name], preload: ^preloads)
+
+    page = BaseballRepo.paginate(
+      query,
+      after: params["after"],
+      before: params["before"],
+      cursor_fields: [:name],
+      limit: 50
+    )
   end
 
   def get_park(opts \\ []) do
@@ -125,6 +148,22 @@ defmodule Pastime.Baseball do
 
   def get_park_by(params) do
     BaseballRepo.get_by(Park, params)
+  end
+
+  ###
+  ### LEAGUES
+  ###
+  def list_leagues() do
+    League
+    |> BaseballRepo.all()
+  end
+
+  def get_league(opts \\ []) do
+    preloads = Keyword.get(opts, :preloads, [])
+
+    League
+    |> BaseballRepo.get_by(id: Keyword.get(opts, :id, nil))
+    |> BaseballRepo.preload(preloads)
   end
 
   ###

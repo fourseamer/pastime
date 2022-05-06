@@ -7,7 +7,7 @@
     <th>Bats</th>
     <th>Throws</th>
   </tr>
-  <%= for player <- @players do %>
+  <%= for player <- @players.entries do %>
     <tr>
       <td>
         <%= link(player.name_first <> " " <> player.name_last, to: "/players/#{player.id}") %>
@@ -19,3 +19,17 @@
     </tr>
   <% end %>
 </table>
+
+<div class="row">
+  <%= unless is_nil(@players.metadata.before) do %>
+    <%= link to: "/players?before=#{@players.metadata.before}" do %>
+      &#8592;
+    <% end %>
+  <% end %>
+  &#160;&#160;
+  <%= unless is_nil(@players.metadata.after) do %>
+    <%= link to: "/players?after=#{@players.metadata.after}" do %>
+      &#8594;
+    <% end %>
+  <% end %>
+</div>

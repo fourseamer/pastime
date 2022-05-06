@@ -6,8 +6,10 @@ defmodule PastimeWeb.ParkController do
   alias Pastime.Baseball.ParkConfig
 
   def index(conn, _params) do
-    parks = Baseball.list_parks()
-    render(conn, "index.html", parks: parks)
+    conn = Plug.Conn.fetch_query_params(conn)
+    params = conn.query_params
+    page = Baseball.list_parks(params: params)
+    render(conn, "index.html", parks: page)
   end
 
   def show(conn, %{"id" => id}) do

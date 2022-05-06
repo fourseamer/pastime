@@ -12,7 +12,7 @@
     <th>Longitude</th>
     <th>Altitude</th>
   </tr>
-  <%= for p <- @parks do %>
+  <%= for p <- @parks.entries do %>
     <tr>
       <td><%= link(p.name, to: "/parks/#{p.id}") %></td>
       <td><%= p.city %></td>
@@ -26,3 +26,17 @@
     </tr>
   <% end %>
 </table>
+
+<div class="row">
+  <%= unless is_nil(@parks.metadata.before) do %>
+    <%= link to: "/parks?before=#{@parks.metadata.before}" do %>
+      &#8592;
+    <% end %>
+  <% end %>
+  &#160;&#160;
+  <%= unless is_nil(@parks.metadata.after) do %>
+    <%= link to: "/parks?after=#{@parks.metadata.after}" do %>
+      &#8594;
+    <% end %>
+  <% end %>
+</div>

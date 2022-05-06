@@ -13,7 +13,7 @@
     <th>Worst Finish</th>
     <th>Avg Finish</th>
   </tr>
-  <%= for m <- @managers do %>
+  <%= for m <- @managers.entries do %>
     <tr>
       <td><%= link(Enum.join([m.name_first,m.name_last], " "), to: "/managers/#{m.person_id}") %></td>
       <td><%= m.yrs %></td>
@@ -28,3 +28,17 @@
     </tr>
   <% end %>
 </table>
+
+<div class="row">
+  <%= unless is_nil(@managers.metadata.before) do %>
+    <%= link to: "/managers?before=#{@managers.metadata.before}" do %>
+      &#8592;
+    <% end %>
+  <% end %>
+  &#160;&#160;
+  <%= unless is_nil(@managers.metadata.after) do %>
+    <%= link to: "/managers?after=#{@managers.metadata.after}" do %>
+      &#8594;
+    <% end %>
+  <% end %>
+</div>

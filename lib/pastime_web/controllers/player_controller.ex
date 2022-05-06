@@ -4,8 +4,10 @@ defmodule PastimeWeb.PlayerController do
   alias Pastime.Baseball
 
   def index(conn, _params) do
-    players = Baseball.list_players()
-    render(conn, "index.html", players: players)
+    conn = Plug.Conn.fetch_query_params(conn)
+    params = conn.query_params
+    page = Baseball.list_players(params: params)
+    render(conn, "index.html", players: page)
   end
 
   def show(conn, %{"id" => id}) do

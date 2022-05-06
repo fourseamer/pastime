@@ -1,12 +1,13 @@
 defmodule PastimeWeb.ManagerController do
   use PastimeWeb, :controller
 
-  import Ecto.Query
   alias Pastime.Baseball
 
   def index(conn, _params) do
-    managers = Baseball.list_managers()
-    render(conn, "index.html", managers: managers)
+    conn = Plug.Conn.fetch_query_params(conn)
+    params = conn.query_params
+    page = Baseball.list_managers(params: params)
+    render(conn, "index.html", managers: page)
   end
 
   def show(conn, %{"id" => id}) do
