@@ -21,7 +21,7 @@
       <td><%= m.to %></td>
       <td><%= m.w %></td>
       <td><%= m.l %></td>
-      <td><%= m.pct %></td>
+      <td><%= String.replace(Decimal.to_string(m.pct), "0.", ".") %></td>
       <td><%= m.best_finish %></td>
       <td><%= m.worst_finish %></td>
       <td><%= m.avg_finish %></td>

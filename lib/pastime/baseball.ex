@@ -63,13 +63,10 @@ defmodule Pastime.Baseball do
   ###
   ### PLAYERS
   ###
-  def list_players(opts \\ []) do
-    preloads = Keyword.get(opts, :preloads, [])
-    params = Keyword.get(opts, :params, nil)
+  def list_players(params) do
+    query = from(p in Person, order_by: [asc: p.id])
 
-    query = from(p in Person, order_by: [asc: p.id], preload: ^preloads)
-
-    page = BaseballRepo.paginate(
+    BaseballRepo.paginate(
       query,
       after: params["after"],
       before: params["before"],
@@ -93,13 +90,10 @@ defmodule Pastime.Baseball do
   ###
   ### MANAGERS
   ###
-  def list_managers(opts \\ []) do
-    preloads = Keyword.get(opts, :preloads, [])
-    params = Keyword.get(opts, :params, nil)
+  def list_managers(params) do
+    query = from(m in VwManager, order_by: [asc: m.person_id])
 
-    query = from(m in VwManager, order_by: [asc: m.person_id], preload: ^preloads)
-
-    page = BaseballRepo.paginate(
+    BaseballRepo.paginate(
       query,
       after: params["after"],
       before: params["before"],
@@ -123,13 +117,10 @@ defmodule Pastime.Baseball do
   ###
   ### PARKS
   ###
-  def list_parks(opts \\ []) do
-    preloads = Keyword.get(opts, :preloads, [])
-    params = Keyword.get(opts, :params, nil)
+  def list_parks(params) do
+    query = from(p in Park, order_by: [asc: p.name])
 
-    query = from(p in Park, order_by: [asc: p.name], preload: ^preloads)
-
-    page = BaseballRepo.paginate(
+    BaseballRepo.paginate(
       query,
       after: params["after"],
       before: params["before"],

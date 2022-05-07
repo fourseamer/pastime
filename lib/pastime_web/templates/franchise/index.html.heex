@@ -22,7 +22,7 @@
       <td><%= franchise.g %></td>
       <td><%= franchise.w %></td>
       <td><%= franchise.l %></td>
-      <td><%= franchise.pct %></td>
+      <td><%= String.replace(Decimal.to_string(franchise.pct), "0.", ".") %></td>
       <td><%= franchise.division_wins %></td>
       <td><%= franchise.league_wins %></td>
       <td><%= franchise.world_series_wins %></td>

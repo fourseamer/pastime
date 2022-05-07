@@ -3,10 +3,8 @@ defmodule PastimeWeb.ManagerController do
 
   alias Pastime.Baseball
 
-  def index(conn, _params) do
-    conn = Plug.Conn.fetch_query_params(conn)
-    params = conn.query_params
-    page = Baseball.list_managers(params: params)
+  def index(conn, params) do
+    page = Baseball.list_managers(params)
     render(conn, "index.html", managers: page)
   end
 

@@ -34,7 +34,7 @@
             <%= if m.team.division_win do %>Won Division
             <% else %>
               <%= if m.team.wild_card_win do %>Won Wild Card
-                <%= else %><%= Ordinal.ordinalize(m.team.rank) %>
+              <% else %><%= Ordinal.ordinalize(m.team.rank) %>
               <% end %>
             <% end %>
           <% end %>

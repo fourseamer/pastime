@@ -115,10 +115,10 @@
       <td><%= batting.cs %></td>
       <td><%= batting.bb %></td>
       <td><%= batting.so %></td>
-      <td><%= batting.ba %></td>
-      <td><%= batting.obp %></td>
-      <td><%= batting.slg %></td>
-      <td><%= batting.ops %></td>
+      <td><%= String.replace(Decimal.to_string(batting.ba), "0.", ".") %></td>
+      <td><%= String.replace(Decimal.to_string(batting.obp), "0.", ".") %></td>
+      <td><%= String.replace(Decimal.to_string(batting.slg), "0.", ".") %></td>
+      <td><%= String.replace(Decimal.to_string(batting.ops), "0.", ".") %></td>
       <td><%= batting.tb %></td>
       <td><%= batting.gidp %></td>
       <td><%= batting.hbp %></td>
