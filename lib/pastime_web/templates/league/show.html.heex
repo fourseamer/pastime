@@ -1,0 +1,11 @@
+<h1><%= @league.name %></h1>
+<table>
+  <tr>
+    <th>Division Name</th>
+  </tr>
+  <%= for d <- @league.divisions do %>
+    <tr>
+      <td><%= d.name %></td>
+    </tr>
+  <% end %>
+</table>

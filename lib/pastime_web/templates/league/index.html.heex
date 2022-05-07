@@ -1,0 +1,17 @@
+<h1>Leagues</h1>
+<table>
+  <tr>
+    <th>Abbreviation</th>
+    <th>Name</th>
+    <th>Active?</th>
+  </tr>
+  <%= for l <- @leagues do %>
+    <tr>
+      <td><%= l.abbreviation %></td>
+      <td>
+        <%= link(l.name, to: "/leagues/#{l.id}") %>
+      </td>
+      <td><%= if (l.is_active), do: "Yes", else: "No" %></td>
+    </tr>
+  <% end %>
+</table>
